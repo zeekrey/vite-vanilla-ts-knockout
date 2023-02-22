@@ -39,4 +39,4 @@ ko.components.register('main', {
   template,
 });
 
-ko.applyBindings();
+ko.applyBindings(null);
