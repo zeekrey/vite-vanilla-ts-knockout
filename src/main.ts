@@ -1,23 +1,42 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import { setupCounter } from './counter'
+import './style.css';
+import typescriptLogo from './typescript.svg';
+import ko from 'knockout';
+import './counter';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+/**
+ * You can put the view model and the template in the same file (main.ts).
+ * Or separate them like the counter example (./counter).
+ */
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+function viewModel(params: { initialText: string }) {
+  const text = ko.observable(params.initialText);
+
+  return {
+    text,
+  };
+}
+
+const template = `
+<div id="app">
+  <a href="https://vitejs.dev" target="_blank">
+    <img src="/vite.svg" class="logo" alt="Vite logo" />
+  </a>
+  <a href="https://www.typescriptlang.org/" target="_blank">
+    <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
+  </a>
+  <h1 data-bind="text: text()"></h1>
+  <div data-bind='component: {
+    name: "counter",
+    params: { initialValue: 0 }
+  }'></div>
+  <p class="read-the-docs">
+    Click on the Vite and TypeScript logos to learn more
+  </p>
+</div>`;
+
+ko.components.register('main', {
+  viewModel,
+  template,
+});
+
+ko.applyBindings();
