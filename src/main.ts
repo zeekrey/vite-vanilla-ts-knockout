@@ -1,7 +1,10 @@
-import './style.css';
-import typescriptLogo from './typescript.svg';
-import ko from 'knockout';
-import './counter';
+import "./style.css";
+import typescriptLogo from "./typescript.svg";
+import ko from "knockout";
+
+/** Import all components here */
+import "./counter";
+import "./consumer";
 
 /**
  * You can put the view model and the template in the same file (main.ts).
@@ -25,18 +28,35 @@ const template = `
     <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
   </a>
   <h1 data-bind="text: text()"></h1>
+
+  <! -- Counter component -->
   <div data-bind='component: {
     name: "counter",
     params: { initialValue: 0 }
   }'></div>
+  <! -- Counter component -->
+
+  <! -- Consumer component -->
+  <div data-bind='component: {
+    name: "consumer",
+    params: { context: $root }
+  }'></div>
+  <! -- Consumer component -->
+
   <p class="read-the-docs">
     Click on the Vite and TypeScript logos to learn more
   </p>
 </div>`;
 
-ko.components.register('main', {
+ko.components.register("main", {
   viewModel,
   template,
 });
 
-ko.applyBindings(null);
+function rootModel() {
+  return {
+    context: "Hello from the root model",
+  };
+}
+
+ko.applyBindings(rootModel);

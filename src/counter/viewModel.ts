@@ -1,4 +1,4 @@
-import ko from 'knockout';
+import ko from "knockout";
 
 export function counter(params: { initialValue: number }) {
   const count = ko.observable(params.initialValue);
